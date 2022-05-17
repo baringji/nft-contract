@@ -1,7 +1,4 @@
-
-# Introduction
-
-## NFTContract: Truffle Suite Minimal Setup
+# NFTContract: Truffle Suite Minimal Setup
 
 **Contract Setup:**
 Params        | Value
