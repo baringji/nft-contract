@@ -21,15 +21,15 @@ if (!INFURA_KEY || !OPENSEA_API_KEY || !MNEMONIC || !OWNER_ADDRESS || !NFT_CONTR
 async function main() {
   try
   {
-    let RPC = '';
+    let providerURL = '';
 
     if (NETWORK == 'development') {
-      RPC = 'http://127.0.0.1:7545';
+      providerURL = 'http://127.0.0.1:7545';
     } else {
-      RPC = 'wss://' + NETWORK + '.infura.io/ws/v3/' + INFURA_KEY + '';
+      providerURL = 'wss://' + NETWORK + '.infura.io/ws/v3/' + INFURA_KEY + '';
     }
 
-    const provider = new HDWalletProvider(MNEMONIC, RPC);
+    const provider = new HDWalletProvider(MNEMONIC, providerURL);
     const expirationTime = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30);
 
     const seaport = new OpenSeaPort(provider, {

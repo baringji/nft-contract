@@ -39,7 +39,8 @@ c. Check contract size for optimization.
 yarn contract:size
 ```
 
-d. Verify the contract after publishing in etherscan. **Note:** Update the package.json with the `ContractName@0xCONTRACT_ADDRESS` to verify the specific contract.
+d. Verify the contract after publishing in etherscan.
+**Note:** Update the package.json with the `ContractName@0xCONTRACT_ADDRESS` to verify the specific contract.
 
 ```sh
 yarn verify:[mainnet, rinkeby]

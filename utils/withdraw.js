@@ -24,15 +24,15 @@ const NFT_ABI = contractABI.abi;
 async function main() {
   try
   {
-    let RPC = '';
+    let providerURL = '';
 
     if (NETWORK == 'development') {
-      RPC = 'http://127.0.0.1:7545';
+      providerURL = 'http://127.0.0.1:7545';
     } else {
-      RPC = 'wss://' + NETWORK + '.infura.io/ws/v3/' + INFURA_KEY + '';
+      providerURL = 'wss://' + NETWORK + '.infura.io/ws/v3/' + INFURA_KEY + '';
     }
 
-    const provider = new HDWalletProvider(MNEMONIC, RPC);
+    const provider = new HDWalletProvider(MNEMONIC, providerURL);
     const web3Instance = new web3(provider);
 
     const nftContract = new web3Instance.eth.Contract(
