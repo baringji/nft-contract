@@ -1,17 +1,22 @@
+
 # Introduction
 
-NFTContract: Truffle Suite Minimal Setup
+## NFTContract: Truffle Suite Minimal Setup
 
-Setup
-TokenBaseURI:  ipfs://__CID__/
-ContractURI:   ipfs://__CID__/erc721.json
-UnRevealedURI: ipfs://__CID__/erc721-preview.json
+**Contract Setup:**
+Params        | Value
+--------------| ----------------------------------
+TokenBaseURI  | ipfs://CID/
+ContractURI   | ipfs://CID/erc721.json
+UnRevealedURI | ipfs://CID/erc721-preview.json
 
-Contract Address
-0x0000000000000000000000000000000000000000
+**Token Addresses:**
+Network     | Migration                                  | NFTContract
+------------| -------------------------------------------| ------------------------------------------
+Mainnet     | 0x0000000000000000000000000000000000000000 | 0x0000000000000000000000000000000000000000
+Rinkeby     | 0x0000000000000000000000000000000000000000 | 0x0000000000000000000000000000000000000000
+Development | 0x0000000000000000000000000000000000000000 | 0x0000000000000000000000000000000000000000
 
-Token Address
-0x0000000000000000000000000000000000000000
 
 ## Installation
 1. Replace NFTContract to your desired NFT name.
@@ -19,7 +24,6 @@ Token Address
 3. Run migrations.
 
 ## Commands
----
 a. Running migration to a network.
 
 ```sh
