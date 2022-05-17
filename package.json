@@ -1,0 +1,39 @@
+{
+  "name": "@eth-dapp/nft-contract",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "contract:compile": "truffle compile",
+    "contract:size": "truffle run contract-size",
+    "contract:test": "truffle compile && mocha --exit --recursive",
+    "migrate:mainnet": "truffle migrate --network mainnet",
+    "migrate:rinkeby": "truffle migrate --network rinkeby",
+    "migrate:develop": "truffle migrate --network development",
+    "verify:mainnet": "truffle run verify NFTContract@0x0000000000000000000000000000000000000000 --network mainnet",
+    "verify:rinkeby": "truffle run verify NFTContract@0x0000000000000000000000000000000000000000 --network rinkeby"
+  },
+  "author": "Jofil Inoc Baring",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
+    "@truffle/hdwallet-provider": "^2.0.8",
+    "dotenv": "^16.0.0",
+    "eth-gas-reporter": "^0.2.25",
+    "opensea-js": "^3.0.4",
+    "truffle-contract-size": "^2.0.1",
+    "truffle-plugin-verify": "^0.5.25",
+    "web3": "^1.7.3"
+  },
+  "devDependencies": {
+    "@openzeppelin/test-environment": "^0.1.9",
+    "@openzeppelin/test-helpers": "^0.5.15",
+    "chai": "^4.3.5",
+    "mocha": "^10.0.0",
+    "truffle": "^5.5.14"
+  },
+  "engines": {
+    "node": "^16.15.0",
+    "yarn": "~1.22.19"
+  }
+}
