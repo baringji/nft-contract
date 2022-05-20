@@ -44,7 +44,7 @@ contract NFTContract is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
         require(PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETHER");
 
         for (uint256 i = 0; i < tokenQuantity; i++) {
-            _safeMint(msg.sender, totalSupply() + 1);
+            _safeMint(_msgSender(), totalSupply() + 1);
         }
     }
 
