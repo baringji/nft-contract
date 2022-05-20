@@ -8,22 +8,29 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract NFTContract is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
+contract NFTContractWhitelist is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
     using Strings for uint256;
 
     string public _contractURI;
     string public _tokenBaseURI;
     string public _unRevealedURI;
 
-    uint256 public PRICE = 0.05 ether;
-    uint256 public MAX_SUPPLY = 555;
+    uint256 public PRICE = 0.08 ether;
+    uint256 public MAX_SUPPLY = 500;
     uint256 public MAX_PER_MINT = 5;
 
+    uint256 public WHITELIST_PRICE = 0.04 ether;
+    uint256 public WHITELIST_MAX_SUPPLY = 55;
+    uint256 public WHITELIST_MAX_PER_MINT = 2;
+
+    bool public isPreSaleLive = false;
     bool public isSaleLive = false;
     bool public isRevealed = false;
 
     address private _signerAddress = 0x032F19C4d64044195C1892197dDAdeaB76ecfd45;
+    bytes32 private _merkleRoot = "";
 
     constructor(
         string memory _initTokenBaseURI,
@@ -38,8 +45,8 @@ contract NFTContract is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
     function mint(uint256 tokenQuantity) external payable nonReentrant {
         require(!paused(), "PAUSABLE_PAUSED");
         require(isSaleLive, "SALE_NOT_STARTED");
-        require(totalSupply() <= MAX_SUPPLY, "OUT_OF_STOCK");
-        require(totalSupply() + tokenQuantity <= MAX_SUPPLY, "EXCEED_SUPPLY_LIMIT");
+        require(totalSupply() <= WHITELIST_MAX_SUPPLY + MAX_SUPPLY, "OUT_OF_STOCK");
+        require(totalSupply() + tokenQuantity <= WHITELIST_MAX_SUPPLY + MAX_SUPPLY, "EXCEED_SUPPLY_LIMIT");
         require(tokenQuantity <= MAX_PER_MINT, "EXCEED_PER_MINT_LIMIT");
         require(PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETHER");
 
@@ -48,9 +55,23 @@ contract NFTContract is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
         }
     }
 
+    function whitelistMint(uint256 tokenQuantity, bytes32[] calldata merkleProof) external payable nonReentrant {
+        require(!paused(), "PAUSABLE_PAUSED");
+        require(isPreSaleLive, "PRE_SALE_NOT_STARTED");
+        require(MerkleProof.verify(merkleProof, _merkleRoot, keccak256(abi.encodePacked(msg.sender))), "NOT_WWHITELISTED");
+        require(totalSupply() <= WHITELIST_MAX_SUPPLY + MAX_SUPPLY, "OUT_OF_STOCK");
+        require(totalSupply() + tokenQuantity <= WHITELIST_MAX_SUPPLY, "EXCEED_WHITELIST_SUPPLY_LIMIT");
+        require(tokenQuantity <= WHITELIST_MAX_PER_MINT, "EXCEED_WHITELIST_PER_MINT_LIMIT");
+        require(WHITELIST_PRICE * tokenQuantity <= msg.value, "INSUFFICIENT_ETHER");
+
+        for (uint256 i = 0; i < tokenQuantity; i++) {
+            _safeMint(msg.sender, totalSupply() + 1);
+        }
+    }
+
     function mintFor(uint256 tokenQuantity, address destination) external onlyOwner nonReentrant{
-        require(totalSupply() <= MAX_SUPPLY, "OUT_OF_STOCK");
-        require(totalSupply() + tokenQuantity <= MAX_SUPPLY, "EXCEED_SUPPLY_LIMIT");
+        require(totalSupply() <= WHITELIST_MAX_SUPPLY + MAX_SUPPLY, "OUT_OF_STOCK");
+        require(totalSupply() + tokenQuantity <= WHITELIST_MAX_SUPPLY + MAX_SUPPLY, "EXCEED_SUPPLY_LIMIT");
 
         for (uint256 i = 0; i < tokenQuantity; i++) {
             _safeMint(destination, totalSupply() + 1);
@@ -72,6 +93,10 @@ contract NFTContract is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
         isSaleLive = !isSaleLive;
     }
 
+    function togglePreSaleLive() public onlyOwner {
+        isPreSaleLive = !isPreSaleLive;
+    }
+
     function toggleReveal() public onlyOwner {
         isRevealed = !isRevealed;
     }
@@ -85,18 +110,28 @@ contract NFTContract is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
         _unpause();
     }
 
+    function setMaxSupply(uint256 limit) public onlyOwner {
+        MAX_SUPPLY = limit;
+    }
+
+    function setMaxPerMint(uint256 limit) public onlyOwner {
+        MAX_PER_MINT = limit;
+    }
+
     function setPrice(uint256 cost) public onlyOwner {
         PRICE = cost;
     }
 
-    function setMaxPerMint(uint256 limit) public onlyOwner {
-        require(0 <= limit, "MINT_LIMIT");
-        MAX_PER_MINT = limit;
+    function setWhitelistMaxSupply(uint256 limit) public onlyOwner {
+        WHITELIST_MAX_SUPPLY = limit;
     }
 
-    function setMaxSupply(uint256 limit) public onlyOwner {
-        require(totalSupply() <= limit, "SUPPLY_LIMIT");
-        MAX_SUPPLY = limit;
+    function setWhitelistMaxPerMint(uint256 limit) public onlyOwner {
+        WHITELIST_MAX_PER_MINT = limit;
+    }
+
+    function setWhitelistPrice(uint256 cost) public onlyOwner {
+        WHITELIST_PRICE = cost;
     }
 
     function setTokenBaseURI(string memory URI) public onlyOwner {
@@ -127,6 +162,10 @@ contract NFTContract is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
         }
 
         return string(abi.encodePacked(_tokenBaseURI, tokenId.toString(), ".json"));
+    }
+
+    function setMerkleRoot(bytes32 merkleRoot) external onlyOwner {
+        _merkleRoot = merkleRoot;
     }
 
     function setSignerAddress(address addr) external onlyOwner {

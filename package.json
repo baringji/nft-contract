@@ -20,6 +20,7 @@
     "@truffle/hdwallet-provider": "^2.0.8",
     "dotenv": "^16.0.0",
     "eth-gas-reporter": "^0.2.25",
+    "merkletreejs": "^0.2.31",
     "opensea-js": "^3.0.4",
     "truffle-contract-size": "^2.0.1",
     "truffle-plugin-verify": "^0.5.25",

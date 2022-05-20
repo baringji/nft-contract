@@ -8,8 +8,8 @@ describe('NFTContract', function () {
   const [owner, minter] = accounts;
   const { ZERO_ADDRESS } = constants;
 
-  const tokenBaseURI   = 'ipfs://__CID__/';
-  const contractURI    = 'ipfs://__CID__/erc721.json';
+  const tokenBaseURI  = 'ipfs://__CID__/';
+  const contractURI   = 'ipfs://__CID__/erc721.json';
   const unRevealedURI = 'ipfs://__CID__/erc721-preview.json';
 
   const price = new web3.utils.toWei('0.04', 'ether');
