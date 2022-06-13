@@ -17,7 +17,7 @@ if (!INFURA_KEY || !MNEMONIC || !OWNER_ADDRESS || !NFT_CONTRACT_ADDRESS) {
   return;
 }
 
-let rawData = fs.readFileSync(path.resolve(__dirname, '../build/contracts/NFTContract.json'));
+let rawData = fs.readFileSync(path.resolve(__dirname, '../build/contracts/NFTContractWhitelist.json'));
 let contractABI = JSON.parse(rawData);
 const NFT_ABI = contractABI.abi;
 
@@ -40,8 +40,8 @@ async function main() {
       NFT_CONTRACT_ADDRESS,
     );
 
-    const result = await nftContract.methods.togglePreSaleLive().send({from: OWNER_ADDRESS});
-    console.log('Pre-Sale is live. Transaction: ' + result.transactionHash);
+    const result = await nftContract.methods.toggleWhitelistLive().send({from: OWNER_ADDRESS});
+    console.log('Whitelist is live. Transaction: ' + result.transactionHash);
   } catch (e) {
     console.log(e);
   }

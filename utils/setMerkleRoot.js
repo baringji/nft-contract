@@ -34,7 +34,7 @@ whitelistAddresses.foreach((addr) => {
   console.log('Leaf: ' + leaf + ' -> Proof: ' + treeNode.getHexProof(leaf) + '');
 });
 
-let rawData = fs.readFileSync(path.resolve(__dirname, '../build/contracts/NFTContract.json'));
+let rawData = fs.readFileSync(path.resolve(__dirname, '../build/contracts/NFTContractWhitelist.json'));
 let contractABI = JSON.parse(rawData);
 const NFT_ABI = contractABI.abi;
 
