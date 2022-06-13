@@ -25,7 +25,7 @@ contract NFTContractWhitelist is ERC721Enumerable, Ownable, Pausable, Reentrancy
     uint256 public WHITELIST_MAX_SUPPLY = 55;
     uint256 public WHITELIST_MAX_PER_MINT = 2;
 
-    bool public isPreSaleLive = false;
+    bool public isWhitelistLive = false;
     bool public isSaleLive = false;
     bool public isRevealed = false;
 
@@ -57,7 +57,7 @@ contract NFTContractWhitelist is ERC721Enumerable, Ownable, Pausable, Reentrancy
 
     function whitelistMint(uint256 tokenQuantity, bytes32[] calldata merkleProof) external payable nonReentrant {
         require(!paused(), "PAUSABLE_PAUSED");
-        require(isPreSaleLive, "PRE_SALE_NOT_STARTED");
+        require(isWhitelistLive, "WHITELIST_NOT_STARTED");
         require(MerkleProof.verify(merkleProof, _merkleRoot, keccak256(abi.encodePacked(_msgSender()))), "NOT_WWHITELISTED");
         require(totalSupply() <= WHITELIST_MAX_SUPPLY + MAX_SUPPLY, "OUT_OF_STOCK");
         require(totalSupply() + tokenQuantity <= WHITELIST_MAX_SUPPLY, "EXCEED_WHITELIST_SUPPLY_LIMIT");
@@ -93,8 +93,8 @@ contract NFTContractWhitelist is ERC721Enumerable, Ownable, Pausable, Reentrancy
         isSaleLive = !isSaleLive;
     }
 
-    function togglePreSaleLive() public onlyOwner {
-        isPreSaleLive = !isPreSaleLive;
+    function toggleWhitelistLive() public onlyOwner {
+        isWhitelistLive = !isWhitelistLive;
     }
 
     function toggleReveal() public onlyOwner {

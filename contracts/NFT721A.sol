@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract NFTContract is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
+contract NFT721A is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
     using Strings for uint256;
 
     string public _contractURI;
@@ -29,7 +29,7 @@ contract NFTContract is ERC721Enumerable, Ownable, Pausable, ReentrancyGuard {
         string memory _initTokenBaseURI,
         string memory _initContractURI,
         string memory _initUnRevealedURI
-    ) ERC721("NFTContract", "NFT") {
+    ) ERC721("NFT721A", "NFT") {
         setTokenBaseURI(_initTokenBaseURI);
         setContractURI(_initContractURI);
         setUnRevealedURI(_initUnRevealedURI);
