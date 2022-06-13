@@ -16,14 +16,17 @@
   "author": "Jofil Inoc Baring",
   "license": "MIT",
   "dependencies": {
+    "@babel/core": "^7.18.5",
     "@openzeppelin/contracts": "^4.6.0",
     "@truffle/hdwallet-provider": "^2.0.8",
+    "bn.js": "^5.2.1",
     "dotenv": "^16.0.0",
     "eth-gas-reporter": "^0.2.25",
     "merkletreejs": "^0.2.31",
     "opensea-js": "^3.0.4",
     "truffle-contract-size": "^2.0.1",
     "truffle-plugin-verify": "^0.5.25",
+    "sqlite3": "^5.0.8",
     "web3": "^1.7.3"
   },
   "devDependencies": {
@@ -33,8 +36,9 @@
     "mocha": "^10.0.0",
     "truffle": "^5.5.14"
   },
+  "packageManager": "pnpm@7.2.1",
   "engines": {
     "node": "^16.15.0",
-    "yarn": "~1.22.19"
+    "pnpm": ">=7"
   }
 }
