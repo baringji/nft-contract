@@ -35,7 +35,7 @@ async function main() {
     const provider = new HDWalletProvider(MNEMONIC, providerURL);
     const web3Instance = new web3(provider);
     const tokenQuantity = 5;
-    const msgValue = tokenQuantity * web3.utils.toWei('0.02', 'ether');
+    const msgValue = tokenQuantity * web3.utils.toWei('0.05', 'ether');
 
     const nftContract = new web3Instance.eth.Contract(
       NFT_ABI,

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.14;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -17,11 +17,11 @@ contract NFTContractWhitelist is ERC721Enumerable, Ownable, Pausable, Reentrancy
     string public _tokenBaseURI;
     string public _unRevealedURI;
 
-    uint256 public PRICE = 0.08 ether;
+    uint256 public PRICE = 0.05 ether;
     uint256 public MAX_SUPPLY = 500;
     uint256 public MAX_PER_MINT = 5;
 
-    uint256 public WHITELIST_PRICE = 0.04 ether;
+    uint256 public WHITELIST_PRICE = 0.02 ether;
     uint256 public WHITELIST_MAX_SUPPLY = 55;
     uint256 public WHITELIST_MAX_PER_MINT = 2;
 
@@ -36,7 +36,7 @@ contract NFTContractWhitelist is ERC721Enumerable, Ownable, Pausable, Reentrancy
         string memory _initTokenBaseURI,
         string memory _initContractURI,
         string memory _initUnRevealedURI
-    ) ERC721("NFTContract", "NFT") {
+    ) ERC721("NFTContractWhitelist", "NFT") {
         setTokenBaseURI(_initTokenBaseURI);
         setContractURI(_initContractURI);
         setUnRevealedURI(_initUnRevealedURI);
@@ -110,28 +110,28 @@ contract NFTContractWhitelist is ERC721Enumerable, Ownable, Pausable, Reentrancy
         _unpause();
     }
 
-    function setMaxSupply(uint256 limit) public onlyOwner {
-        MAX_SUPPLY = limit;
+    function setPrice(uint256 cost) public onlyOwner {
+        PRICE = cost;
     }
 
     function setMaxPerMint(uint256 limit) public onlyOwner {
         MAX_PER_MINT = limit;
     }
 
-    function setPrice(uint256 cost) public onlyOwner {
-        PRICE = cost;
+    function setMaxSupply(uint256 limit) public onlyOwner {
+        MAX_SUPPLY = limit;
     }
 
-    function setWhitelistMaxSupply(uint256 limit) public onlyOwner {
-        WHITELIST_MAX_SUPPLY = limit;
+    function setWhitelistPrice(uint256 cost) public onlyOwner {
+        WHITELIST_PRICE = cost;
     }
 
     function setWhitelistMaxPerMint(uint256 limit) public onlyOwner {
         WHITELIST_MAX_PER_MINT = limit;
     }
 
-    function setWhitelistPrice(uint256 cost) public onlyOwner {
-        WHITELIST_PRICE = cost;
+    function setWhitelistMaxSupply(uint256 limit) public onlyOwner {
+        WHITELIST_MAX_SUPPLY = limit;
     }
 
     function setTokenBaseURI(string memory URI) public onlyOwner {

@@ -17,7 +17,7 @@ if (!INFURA_KEY || !MNEMONIC || !OWNER_ADDRESS || !NFT_CONTRACT_ADDRESS) {
   return;
 }
 
-let rawData = fs.readFileSync(path.resolve(__dirname, '../build/contracts/NFTContractWhitelist.json'));
+let rawData = fs.readFileSync(path.resolve(__dirname, '../build/contracts/NFTContract.json'));
 let contractABI = JSON.parse(rawData);
 const NFT_ABI = contractABI.abi;
 
@@ -34,22 +34,14 @@ async function main() {
 
     const provider = new HDWalletProvider(MNEMONIC, providerURL);
     const web3Instance = new web3(provider);
-    const tokenQuantity = 2;
-    const msgValue = tokenQuantity * web3.utils.toWei('0.02', 'ether');
-    const merkleProof = '';
 
     const nftContract = new web3Instance.eth.Contract(
       NFT_ABI,
       NFT_CONTRACT_ADDRESS,
     );
 
-    const result = await nftContract.methods.whitelistMint(tokenQuantity, merkleProof)
-      .send({
-        from: OWNER_ADDRESS,
-        value: msgValue
-      });
-
-    console.log('Minted NFT from the whitelists. Transaction: ' + result.transactionHash);
+    const result = await nftContract.methods.togglePreSaleLive().send({from: OWNER_ADDRESS});
+    console.log('Pre-Sale is live. Transaction: ' + result.transactionHash);
   } catch (e) {
     console.log(e);
   }
