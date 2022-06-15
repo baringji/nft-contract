@@ -19,10 +19,7 @@ if (!INFURA_KEY || !MNEMONIC || !OWNER_ADDRESS || !NFT_CONTRACT_ADDRESS) {
   return;
 }
 
-const whitelistAddresses = [
-  '0x032F19C4d64044195C1892197dDAdeaB76ecfd45'
-];
-
+const whitelistAddresses = require('./whitelistAddresses.json');
 const leafNode = whitelistAddresses.map(addr => keccak256(addr));
 const treeNode = new MerkleTree(leafNode, keccak256, { sort: true });
 
