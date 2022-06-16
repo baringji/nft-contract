@@ -9,11 +9,11 @@ const INFURA_KEY = process.env.INFURA_KEY;
 const NETWORK = process.env.NETWORK;
 
 const MNEMONIC = process.env.MNEMONIC;
-const OWNER_ADDRESS = process.env.OWNER_ADDRESS;
+const MINTER_ADDRESS = process.env.MINTER_ADDRESS;
 const NFT_CONTRACT_ADDRESS = process.env.NFT_CONTRACT_ADDRESS;
 
-if (!INFURA_KEY || !MNEMONIC || !OWNER_ADDRESS || !NFT_CONTRACT_ADDRESS) {
-  console.error('Please set a infura key, mnemonic, owner address, and contract address.');
+if (!INFURA_KEY || !MNEMONIC || !MINTER_ADDRESS || !NFT_CONTRACT_ADDRESS) {
+  console.error('Please set a infura key, mnemonic, minter address, and contract address.');
   return;
 }
 
@@ -44,7 +44,7 @@ async function main() {
 
     const result = await nftContract.methods.mint(tokenQuantity)
       .send({
-        from: OWNER_ADDRESS,
+        from: MINTER_ADDRESS,
         value: msgValue
       });
 

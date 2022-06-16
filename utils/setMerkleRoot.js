@@ -4,7 +4,7 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 const web3 = require('web3');
 const fs = require('fs');
 const path = require('path');
-const MerkleTree = require('merkletreejs');
+const { MerkleTree } = require('merkletreejs');
 const keccak256 = require('keccak256');
 
 const INFURA_KEY = process.env.INFURA_KEY;
@@ -23,21 +23,23 @@ console.log('Reading whitelist addresses: ../utils/merkleTree/whitelistAddresses
 let rawAddresses = fs.readFileSync(path.resolve(__dirname, '../utils/merkleTree/whitelistAddresses.json'));
 let whitelistAddresses = JSON.parse(rawAddresses);
 
-const leafNode = whitelistAddresses.map(addr => keccak256(addr));
-const treeNode = new MerkleTree(leafNode, keccak256, { sort: true });
+const leafNodes = whitelistAddresses.map(addr => keccak256(addr));
+const treeNode = new MerkleTree(leafNodes, keccak256, { sort: true });
 
 const hexRoot = treeNode.getHexRoot();
 console.log('Root: ' + hexRoot + '');
 
 const leafLists = [];
-whitelistAddresses.foreach((addr) => {
+whitelistAddresses.forEach((addr) => {
+  let leaf = keccak256(addr)
   leafLists.push({
-    'leaf': keccak256(addr),
+    'leaf': leaf,
+    'address': addr,
     'proof': treeNode.getHexProof(leaf)
   });
 });
-console.log('Writing hexProof: ../utils/merkleTree/whitelistProofs.json');
-fs.writeFileSync(`../utils/merkleTree/whitelistProofs.json`, JSON.stringify(leafLists, null, 2));
+console.log('Writing hexProofs: ../utils/merkleTree/whitelistProofs.json');
+fs.writeFileSync(path.resolve(__dirname, '../utils/merkleTree/whitelistProofs.json'), JSON.stringify(leafLists, null, 2));
 
 let rawData = fs.readFileSync(path.resolve(__dirname, '../build/contracts/NFTContractWhitelist.json'));
 let contractABI = JSON.parse(rawData);

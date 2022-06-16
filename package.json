@@ -22,6 +22,7 @@
     "bn.js": "4.11.0",
     "dotenv": "^16.0.0",
     "eth-gas-reporter": "^0.2.25",
+    "keccak256": "^1.0.6",
     "merkletreejs": "^0.2.31",
     "opensea-js": "^3.0.4",
     "truffle-contract-size": "^2.0.1",
