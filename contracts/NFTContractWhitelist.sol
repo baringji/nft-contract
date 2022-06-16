@@ -58,7 +58,7 @@ contract NFTContractWhitelist is ERC721Enumerable, Ownable, Pausable, Reentrancy
     function whitelistMint(uint256 tokenQuantity, bytes32[] calldata merkleProof) external payable nonReentrant {
         require(!paused(), "PAUSABLE_PAUSED");
         require(isWhitelistLive, "WHITELIST_NOT_STARTED");
-        require(MerkleProof.verify(merkleProof, _merkleRoot, keccak256(abi.encodePacked(_msgSender()))), "NOT_WWHITELISTED");
+        require(MerkleProof.verify(merkleProof, _merkleRoot, keccak256(abi.encodePacked(_msgSender()))), "NOT_WHITELISTED");
         require(totalSupply() <= WHITELIST_MAX_SUPPLY + MAX_SUPPLY, "OUT_OF_STOCK");
         require(totalSupply() + tokenQuantity <= WHITELIST_MAX_SUPPLY, "EXCEED_WHITELIST_SUPPLY_LIMIT");
         require(balanceOf(_msgSender()) + tokenQuantity <= WHITELIST_MAX_PER_MINT, "EXCEED_WHITELIST_PER_MINT_LIMIT");
