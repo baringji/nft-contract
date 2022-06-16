@@ -19,17 +19,25 @@ if (!INFURA_KEY || !MNEMONIC || !OWNER_ADDRESS || !NFT_CONTRACT_ADDRESS) {
   return;
 }
 
-const whitelistAddresses = require('./whitelistAddresses.json');
+console.log('Reading whitelist addresses: ../utils/merkleTree/whitelistAddresses.json');
+let rawAddresses = fs.readFileSync(path.resolve(__dirname, '../utils/merkleTree/whitelistAddresses.json'));
+let whitelistAddresses = JSON.parse(rawAddresses);
+
 const leafNode = whitelistAddresses.map(addr => keccak256(addr));
 const treeNode = new MerkleTree(leafNode, keccak256, { sort: true });
 
 const hexRoot = treeNode.getHexRoot();
 console.log('Root: ' + hexRoot + '');
 
+const leafLists = [];
 whitelistAddresses.foreach((addr) => {
-  let leaf = keccak256(addr);
-  console.log('Leaf: ' + leaf + ' -> Proof: ' + treeNode.getHexProof(leaf) + '');
+  leafLists.push({
+    'leaf': keccak256(addr),
+    'proof': treeNode.getHexProof(leaf)
+  });
 });
+console.log('Writing hexProof: ../utils/merkleTree/whitelistProofs.json');
+fs.writeFileSync(`../utils/merkleTree/whitelistProofs.json`, JSON.stringify(leafLists, null, 2));
 
 let rawData = fs.readFileSync(path.resolve(__dirname, '../build/contracts/NFTContractWhitelist.json'));
 let contractABI = JSON.parse(rawData);
